@@ -1,20 +1,18 @@
 import { Component } from 'react';
 import Message from './Message';
 
-class Messages extends Component {
-    constructor(props) {
-        super(props);
-    }
+const Messages = (props) => {
+    console.log({Ort : "Messages", props })
 
-    render = () => {
+    
         return (
             <div>
-                {this.props.messages.map((message, i) => <Message key={i}
+                {props.messages.map(message => <Message key={message.id}
                     message={message}
-                    update={this.props.update} />)}
+                    updateItem={props.updateItem} />)}
             </div>
         )
-    }
+    
 }
 
 export default Messages
