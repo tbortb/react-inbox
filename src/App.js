@@ -12,7 +12,6 @@ class App extends Component {
 
 
   async componentDidMount() {
-    console.log("asd");
     const fetched = await fetch('http://localhost:8082/api/messages');
     const messages = await fetched.json();
     this.setState({ messages });
