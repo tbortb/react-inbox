@@ -10,20 +10,23 @@ class Toolbar extends Component {
 
     state = {
         selectedIconClass: "",
-        disabled: ""
+        disabled: "",
+        unreadCount: 0
     };
 
     static getDerivedStateFromProps = (nextProps, prevState) => {
-        let selectedNum = nextProps.messages.filter(m => m.selected).length;
-        let messagesCount = nextProps.messages.length;
-        let selectedIconClass = selectedNum > 0 ?
+        const selectedNum = nextProps.messages.filter(m => m.selected).length;
+        const messagesCount = nextProps.messages.length;
+        const selectedIconClass = selectedNum > 0 ?
             messagesCount === selectedNum ?
                 allSelectedMailsClass :
                 someSelectedMailsClass
             : noSelectedMailsClass;
         const disabled = selectedNum > 0 ? "" : "disabled";
+        const unreadCount = nextProps.messages.filter(m => !m.read).length;
+
         return {
-            selectedIconClass, disabled
+            selectedIconClass, disabled, unreadCount
         }
     }
 
@@ -69,8 +72,8 @@ class Toolbar extends Component {
     render = () => <div className="row toolbar">
         <div className="col-md-12">
             <p className="pull-right">
-                <span className="badge badge">2</span>
-        unread messages
+                <span className="badge badge">{this.state.unreadCount}</span>
+        unread message{this.state.unreadCount !== 1 ? "s" : ""}
       </p>
 
             <button className="btn btn-default">
