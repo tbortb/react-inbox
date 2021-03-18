@@ -2,9 +2,6 @@ import { Component } from 'react';
 import Message from './Message';
 
 const Messages = (props) => {
-    console.log({Ort : "Messages", props })
-
-    
         return (
             <div>
                 {props.messages.map(message => <Message key={message.id}
@@ -12,7 +9,6 @@ const Messages = (props) => {
                     updateItem={props.updateItem} />)}
             </div>
         )
-    
 }
 
 export default Messages

@@ -1,55 +1,52 @@
 import { Component } from 'react';
 
-const Message = props => {
+class Message extends Component {
+    state = { read: null, starred: null, seleceted: null, checked: null };
 
-    console.log({Ort: "Message", props: props});
-    //Why can I not put these in the component did mount method?
-    //Why do only stateless components rerender on props changed?
-    const read = props.message.read ? "read" : "unread";
-    const starred = props.message.starred ? "fa-star" : "fa-star-o";
-    const selected = props.message.selected ? "selected" : "";
-    const checked = props.message.selected ? "checked" : "";
-    // console.log(this.props.message.starred ? "fa-star" : "fa-star-o");
-    
-
-    let update = e => {
-        let target = e.target.dataset.attribute;
-        let value = !props.message[target];
-        
-        console.log(`Changed ${target} from ${props.message[target]} to ${value}`)
-
-        let updatedItem = {...props.message, [target]: value};
-        console.log(updatedItem);
-        props.updateItem(updatedItem)
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            read: nextProps.message.read ? "read" : "unread",
+            starred: nextProps.message.starred ? "fa-star" : "fa-star-o",
+            selected: nextProps.message.selected ? "selected" : "",
+            checked: nextProps.message.selected ? "checked" : "",
+            labels: nextProps.message.labels
+        }
     }
 
-    
-        return <div className={"row message " + read + " " + selected}>
+    update = e => {
+        let target = e.target.dataset.attribute;
+        let value = !this.props.message[target];
+        let updatedItem = { ...this.props.message, [target]: value };
+        this.props.updateItem(updatedItem)
+    }
+
+    render = () => {
+        return <div className={"row message " + this.state.read + " " + this.state.selected}>
             <div className="col-xs-1">
                 <div className="row">
                     <div className="col-xs-2">
                         <input type="checkbox"
                             data-attribute="selected"
-                            defaultChecked={checked} onChange={update}/>
+                            defaultChecked={this.state.checked} onChange={this.update} />
                     </div>
                     <div className="col-xs-2">
-                        <i className={"star fa " + starred}
-                        data-attribute="starred"
-                        onClick={update}></i>
+                        <i className={"star fa " + this.state.starred}
+                            data-attribute="starred"
+                            onClick={this.update}></i>
                     </div>
                 </div>
             </div>
             <div className="col-xs-11">
-                {props.message.labels.map((label, i) => <span key={i}
+                {this.state.labels.map((label, i) => <span key={i}
                     className="label label-warning">{label}
                 </span>)}
                 <a href="#">
-                    {props.message.subject}
+                    {this.props.message.subject}
                 </a>
             </div>
         </div>
+    }
 
-    
 }
 
 export default Message

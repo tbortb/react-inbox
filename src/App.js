@@ -79,7 +79,6 @@ class App extends Component {
   }
 
   render = () => {
-    console.log({ Ort: "App", state: this.state });
     return (
       <div className="App">
         <Toolbar />
