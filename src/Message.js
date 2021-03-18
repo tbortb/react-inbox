@@ -3,7 +3,7 @@ import { Component } from 'react';
 class Message extends Component {
     state = { read: null, starred: null, seleceted: null, checked: null };
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps = (nextProps, prevState) => {
         return {
             read: nextProps.message.read ? "read" : "unread",
             starred: nextProps.message.starred ? "fa-star" : "fa-star-o",
@@ -27,7 +27,7 @@ class Message extends Component {
                     <div className="col-xs-2">
                         <input type="checkbox"
                             data-attribute="selected"
-                            defaultChecked={this.state.checked} onChange={this.update} />
+                            checked={this.state.checked} onChange={this.update} />
                     </div>
                     <div className="col-xs-2">
                         <i className={"star fa " + this.state.starred}

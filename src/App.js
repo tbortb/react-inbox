@@ -78,10 +78,16 @@ class App extends Component {
     }));
   }
 
+  deleteOneMail = (deleteItem) => {
+    this.setState(prevState => ({
+      messages: prevState.messages.filter(pm => pm.id !== deleteItem.id)
+    }))
+  }
+
   render = () => {
     return (
       <div className="App">
-        <Toolbar />
+        <Toolbar messages={this.state.messages} updateItem={this.updateOneMail} deleteItem={this.deleteOneMail}/>
         <Messages messages={this.state.messages} updateItem={this.updateOneMail} />
       </div>
     );
