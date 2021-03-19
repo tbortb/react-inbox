@@ -13,11 +13,21 @@ class Message extends Component {
         }
     }
 
+    // update = e => {
+    //     let target = e.target.dataset.attribute;
+    //     let value = !this.props.message[target];
+    //     let updatedItem = { ...this.props.message, [target]: value };
+    //     this.props.updateItem(updatedItem)
+    // }
+
     update = e => {
         let target = e.target.dataset.attribute;
         let value = !this.props.message[target];
-        let updatedItem = { ...this.props.message, [target]: value };
-        this.props.updateItem(updatedItem)
+        this.props.updateItem({
+            messageIds: [this.props.message.id],
+            command: target,
+            [target]: value
+        });
     }
 
     render = () => {
@@ -31,7 +41,8 @@ class Message extends Component {
                     </div>
                     <div className="col-xs-2">
                         <i className={"star fa " + this.state.starred}
-                            data-attribute="starred"
+                            // data-attribute="starred"
+                            data-attribute="star"
                             onClick={this.update}></i>
                     </div>
                 </div>

@@ -32,91 +32,73 @@ class Toolbar extends Component {
 
     updateSelection = e => {
         const setSelectedTo = this.state.selectedIconClass !== allSelectedMailsClass;
-        const changeMessages = this.props.messages.filter(m => m.selected !== setSelectedTo);
-        changeMessages.forEach(m => this.props.updateItem({ ...m, selected: setSelectedTo }));
+        const changeMessageIds = this.props.messages.filter(m => m.selected !== setSelectedTo).map(m => m.id);
+        this.props.updateItem({ messageIds: changeMessageIds, command: "selected", selected: setSelectedTo })
     }
 
-    updateReadStatus = e => {
-        this.getSelected().forEach(m => {
-            const updatedMessage = { ...m, [e.target.dataset.attribute]: e.target.value == "true" };
-            this.props.updateItem(updatedMessage);
+    updateValue = e => {
+        console.log({target: e.target});
+        this.props.updateItem({
+            messageIds: this.props.messages.filter(m => m.selected).map(m => m.id),
+            command: e.target.dataset.command,
+            [e.target.dataset.attribute]: e.target.value
         })
     }
-
-    addLabel = e => {
-        const newLabel = e.target.value;
-        if (newLabel === applyLabelDefault){
-            return;
-        }
-        this.getSelected().forEach(m => {
-            if (m.labels.includes(newLabel)){
-                return;
-            }
-            const updatedMessage = { ...m, labels: [...m.labels, e.target.value] };
-            this.props.updateItem(updatedMessage);
-        })
-    }
-    
-    removeLabel = e => {
-        const removeLabel = e.target.value;
-        this.getSelected().forEach(m => {
-            const updatedMessage = { ...m, labels: m.labels.filter(l => l !== removeLabel) };
-            this.props.updateItem(updatedMessage);
-        })
-    }
-
-    deleteMessage = e => this.getSelected().forEach(m => this.props.deleteItem(m))
-
-    getSelected = () => this.props.messages.filter(m => m.selected);
 
     render = () => <div className="row toolbar">
         <div className="col-md-12">
             <p className="pull-right">
                 <span className="badge badge">{this.state.unreadCount}</span>
         unread message{this.state.unreadCount !== 1 ? "s" : ""}
-      </p>
+            </p>
 
-            <button className="btn btn-default">
-                <i className={"fa " + this.state.selectedIconClass}
-                    onClick={this.updateSelection}></i>
+            <button className="btn btn-default" onClick={this.updateSelection}>
+                <i className={"fa " + this.state.selectedIconClass}></i>
             </button>
 
             <button className="btn btn-default"
                 disabled={this.state.disabled}
+                data-command="read"
                 data-attribute="read"
-                value="true"
-                onClick={this.updateReadStatus}>
+                value
+                onClick={this.updateValue}>
                 Mark As Read
-      </button>
+            </button>
 
             <button className="btn btn-default"
                 disabled={this.state.disabled}
+                data-command="read"
                 data-attribute="read"
-                value="false"
-                onClick={this.updateReadStatus}>
+                onClick={this.updateValue}>
                 Mark As Unread
-      </button>
+            </button>
 
             <select className="form-control label-select"
-            disabled={this.state.disabled}
-            onChange={this.addLabel}>
-                <option>{applyLabelDefault}</option>
+                data-command="addLabel"
+                data-attribute="label"
+                disabled={this.state.disabled}
+                onChange={this.updateValue}>
+                <option value="">{applyLabelDefault}</option>
                 <option value="dev">dev</option>
                 <option value="personal">personal</option>
                 <option value="gschool">gschool</option>
             </select>
 
             <select className="form-control label-select"
-            disabled={this.state.disabled}
-            onChange={this.removeLabel}>
-                <option>{removeLabelDefault}</option>
+                data-command="removeLabel"
+                data-attribute="label"
+                disabled={this.state.disabled}
+                onChange={this.updateValue}>
+                <option value={applyLabelDefault}>{removeLabelDefault}</option>
                 <option value="dev">dev</option>
                 <option value="personal">personal</option>
                 <option value="gschool">gschool</option>
             </select>
 
-            <button className="btn btn-default" disabled={this.state.disabled}
-            onClick={this.deleteMessage}>
+            <button className="btn btn-default"
+                disabled={this.state.disabled}
+                data-command="delete"
+                onClick={this.updateValue}>
                 <i className="fa fa-trash-o"></i>
             </button>
         </div>
