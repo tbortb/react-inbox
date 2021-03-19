@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import Message from './Message';
 
 const Messages = (props) => {

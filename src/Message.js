@@ -13,13 +13,6 @@ class Message extends Component {
         }
     }
 
-    // update = e => {
-    //     let target = e.target.dataset.attribute;
-    //     let value = !this.props.message[target];
-    //     let updatedItem = { ...this.props.message, [target]: value };
-    //     this.props.updateItem(updatedItem)
-    // }
-
     update = e => {
         let target = e.target.dataset.attribute;
         let value = !this.props.message[target];

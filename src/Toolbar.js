@@ -37,7 +37,6 @@ class Toolbar extends Component {
     }
 
     updateValue = e => {
-        console.log({target: e.target});
         this.props.updateItem({
             messageIds: this.props.messages.filter(m => m.selected).map(m => m.id),
             command: e.target.dataset.command,
@@ -45,12 +44,18 @@ class Toolbar extends Component {
         })
     }
 
+    
+
     render = () => <div className="row toolbar">
         <div className="col-md-12">
             <p className="pull-right">
                 <span className="badge badge">{this.state.unreadCount}</span>
         unread message{this.state.unreadCount !== 1 ? "s" : ""}
             </p>
+
+            <a className="btn btn-danger" onClick={this.props.toggleComposeForm}>
+                <i className="fa fa-plus"></i>
+            </a>
 
             <button className="btn btn-default" onClick={this.updateSelection}>
                 <i className={"fa " + this.state.selectedIconClass}></i>

@@ -3,12 +3,14 @@ import { Component } from 'react';
 import Toolbar from './Toolbar';
 import Messages from './Messages';
 import { getAllEmails, addOneEmail, updateOneEmail } from './ApiCommunication'
+import ComposeForm from './ComposeForm';
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { messages: [] };
+    this.state = { messages: [],
+      showComposeForm: false };
   }
 
   async componentDidMount() {
@@ -17,7 +19,6 @@ class App extends Component {
   }
 
   updateOneMail = async (changeItem) => {
-    console.log({ updateInput: changeItem })
     //changes in selection dont go to the server
     if (changeItem.command === "selected") {
       this.changeSelectState(changeItem);
@@ -27,9 +28,13 @@ class App extends Component {
     }
   }
 
+  addNewMail = async (newRawMail) => {
+    const newMail = await addOneEmail(newRawMail);
+    this.toggleComposeForm();
+  }
+
   updateOnServerAndState = async changeItem => {
     const updatedItems = await updateOneEmail(changeItem);
-      console.log({ response: updatedItems });
       //Take selected status from prevState, because it is not saved on the server
       this.setState(prevState => ({
         messages:
@@ -46,10 +51,15 @@ class App extends Component {
     }))
   }
 
+  toggleComposeForm = e => {
+    this.setState(prevState => ({showComposeForm: !prevState.showComposeForm}));
+}
+
   render = () => {
     return (
       <div className="App">
-        <Toolbar messages={this.state.messages} updateItem={this.updateOneMail} />
+        <Toolbar messages={this.state.messages} updateItem={this.updateOneMail} toggleComposeForm={this.toggleComposeForm} />
+        {this.state.showComposeForm ? <ComposeForm addFunc={this.addNewMail}/> : ""}
         <Messages messages={this.state.messages} updateItem={this.updateOneMail} />
       </div>
     );
