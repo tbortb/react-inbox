@@ -1,9 +1,9 @@
 import './App.css';
 import { Component } from 'react';
-import Toolbar from './Toolbar';
-import Messages from './Messages';
+import Toolbar from './Components/Toolbar';
+import Messages from './Components/Messages';
 import { getAllEmails, addOneEmail, updateOneEmail } from './ApiCommunication'
-import ComposeForm from './ComposeForm';
+import ComposeForm from './Components/ComposeForm';
 
 class App extends Component {
 
